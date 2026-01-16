@@ -1,5 +1,8 @@
 """FastHTML web UI for RPG DM Tools."""
 
+from dotenv import load_dotenv
+load_dotenv()  # Load .env before accessing os.environ
+
 import argparse
 import json
 import os

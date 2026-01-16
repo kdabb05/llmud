@@ -1,3 +1,4 @@
+import "dotenv/config";
 import * as readline from "readline";
 import chalk from "chalk";
 import { connectToMcpServer, loadMcpToolsAsLangChainTools } from "./mcp-tools.js";
@@ -140,7 +141,7 @@ async function main() {
   console.log(chalk.gray("Loading MCP tools..."));
   const tools = await loadMcpToolsAsLangChainTools(client);
   console.log(chalk.green(`✓ Loaded ${tools.length} tools:`));
-  tools.forEach((t) => console.log(chalk.gray(`  • ${t.name}`)));
+  tools.forEach((t: { name: string }) => console.log(chalk.gray(`  • ${t.name}`)));
   console.log();
 
   // Create agent with optional debug callbacks
