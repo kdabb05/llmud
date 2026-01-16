@@ -24,6 +24,7 @@ from tools.lore import (
     lookup_npc as _lookup_npc,
     lookup_creature as _lookup_creature,
     lookup_scenario as _lookup_scenario,
+    lookup_item as _lookup_item,
 )
 from tools.session import (
     create_session as _create_session,
@@ -164,6 +165,24 @@ def lookup_scenario(scenario_id: str) -> Dict[str, Any]:
         If not found: suggestions for similar scenario IDs.
     """
     return _lookup_scenario(scenario_id)
+
+
+@mcp.tool()
+def lookup_item(item_id: str) -> Dict[str, Any]:
+    """
+    Look up information about an item or artifact in the game world.
+
+    Use this to get descriptions, rarity, effects, hooks, and who knows about the item.
+    Useful for referencing magical items, artifacts, or important objects.
+
+    Args:
+        item_id: Identifier for the item (e.g., "ancient_sword", "healing_potion")
+
+    Returns:
+        If found: id, name, description, rarity, effects, hooks, known_by.
+        If not found: suggestions for similar item IDs.
+    """
+    return _lookup_item(item_id)
 
 
 # ============================================================================

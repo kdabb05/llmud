@@ -1,0 +1,11 @@
+{
+  "healing_potion": {
+    "id": "healing_potion",
+    "name": "Healing Potion",
+    "description": "A small vial containing a red liquid that heals wounds.",
+    "rarity": "common",
+    "effects": ["Restores 10 HP"],
+    "hooks": ["Rumored to be brewed by the village herbalist."],
+    "known_by": ["marta_innkeeper"]
+  }
+}

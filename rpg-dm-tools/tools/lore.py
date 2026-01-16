@@ -239,3 +239,111 @@ def lookup_scenario(scenario_id: str) -> Dict[str, Any]:
         "query": scenario_id,
         "suggestions": suggestions
     }
+
+
+def lookup_item(item_id: str) -> Dict[str, Any]:
+    """
+    Look up information about an item or artifact in the game world.
+
+    Use this to get descriptions, rarity, effects, hooks, and who knows about the item.
+    Useful for referencing magical items, artifacts, or important objects.
+
+    Args:
+        item_id: Identifier for the item (e.g., "ancient_sword", "healing_potion")
+
+    Returns:
+        Dictionary with:
+        - found: True if item exists
+        - id: The item identifier
+        - name: Display name
+        - description: Text description
+        - rarity: Rarity or value
+        - effects: List of effects or powers
+        - hooks: Adventure hooks or rumors
+        - known_by: List of NPCs or groups who know about it
+
+        Or if not found:
+        - found: False
+        - query: The search term used
+        - suggestions: List of similar item IDs
+    """
+    data = get_world_data("items.json")
+    if data is None:
+        return {
+            "success": False,
+            "error": "Items data file not found",
+            "hint": "Ensure game_data/world/items.json exists"
+        }
+
+    # Normalize item ID for lookup
+    id_key = item_id.lower().replace(" ", "_")
+
+    # Exact match
+    if id_key in data:
+        item = data[id_key]
+        return {
+            "found": True,
+            "id": item.get("id", id_key),
+            "name": item.get("name", id_key),
+            "description": item.get("description", ""),
+            "rarity": item.get("rarity", ""),
+            "effects": item.get("effects", []),
+            "hooks": item.get("hooks", []),
+            "known_by": item.get("known_by", [])
+        }
+
+    # Fuzzy search for item type (e.g., swords)
+    matches = []
+    for key, item in data.items():
+        if "sword" in key or "sword" in item.get("name", "").lower():
+            matches.append({
+                "id": item.get("id", key),
+                "name": item.get("name", key),
+                "description": item.get("description", ""),
+                "rarity": item.get("rarity", ""),
+                "effects": item.get("effects", []),
+                "hooks": item.get("hooks", []),
+                "known_by": item.get("known_by", [])
+            })
+    # If the query is a general type (like 'sword'), return all matches
+    if "sword" in id_key and matches:
+        return {
+            "found": True,
+            "items": matches
+        }
+
+    # Substring search for any item containing the query
+    substring_matches = []
+    for key, item in data.items():
+        if id_key in key or id_key in item.get("name", "").lower():
+            substring_matches.append({
+                "id": item.get("id", key),
+                "name": item.get("name", key),
+                "description": item.get("description", ""),
+                "rarity": item.get("rarity", ""),
+                "effects": item.get("effects", []),
+                "hooks": item.get("hooks", []),
+                "known_by": item.get("known_by", [])
+            })
+    if substring_matches:
+        return {
+            "found": True,
+            "items": substring_matches
+        }
+
+    # Not found - provide suggestions
+    suggestions = find_similar(id_key, list(data.keys()))
+    # If no suggestions, offer a list of all items
+    if not suggestions:
+        all_items = [item.get("name", key) for key, item in data.items()]
+        return {
+            "found": False,
+            "query": item_id,
+            "suggestions": suggestions,
+            "all_items": all_items
+        }
+    return {
+        "found": False,
+        "query": item_id,
+        "suggestions": suggestions
+    }

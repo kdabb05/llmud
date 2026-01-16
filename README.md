@@ -32,8 +32,11 @@ The MCP server will be available at `http://localhost:8000/mcp`
 
 ```bash
 # Run the server directly without installing
-uv run python rpg-dm-tools/rpg_server.py --port 8000
-
+cd chat-client
+npm install
+export OPENROUTER_API_KEY=your-key
+# optional: export LLM_MODEL=google/gemini-2.0-flash-001
+npm run dev            # add -- --debug to see tool calls
 # Run tests
 uv run python rpg-dm-tools/test_server.py
 ```
@@ -49,6 +52,7 @@ The RPG DM Tools MCP server provides:
 | `lookup_npc` | Look up NPC details, personality, knowledge |
 | `lookup_creature` | Get creature stats for combat encounters |
 | `lookup_scenario` | Retrieve pre-written adventure hooks |
+| `lookup_item` | List or look up items/artifacts by name or type (e.g., all swords) |
 | `create_session` | Start a new game session |
 | `get_session_state` | Check current game state |
 | `read_character` | View a character sheet |

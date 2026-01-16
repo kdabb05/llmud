@@ -1,7 +1,7 @@
 """Tool implementations for RPG DM Tools MCP Server."""
 
 from .dice import roll_dice
-from .lore import lookup_geography, lookup_npc, lookup_creature, lookup_scenario
+from .lore import lookup_geography, lookup_npc, lookup_creature, lookup_scenario, lookup_item
 from .session import create_session, get_session_state
 from .character import read_character, update_character
 from .movement import get_current_map, move_character
@@ -12,6 +12,7 @@ __all__ = [
     "lookup_npc",
     "lookup_creature",
     "lookup_scenario",
+    "lookup_item",
     "create_session",
     "get_session_state",
     "read_character",
